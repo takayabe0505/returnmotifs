@@ -25,8 +25,8 @@ public class mainrun {
 		Double maxshift  = 250d;
 		Double cutoff    = 1000d;		
 		
-		runcode(gps1, "type1", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 1");
-		runcode(gps2, "type2", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 1");
+//		runcode(gps1, "type1", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 1");
+		runcode(gps2, "type2", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 2");
 
 	}
 

@@ -38,14 +38,14 @@ public class displacement {
 			}
 			for(String date : logs.get(id).keySet()) {
 				TreeMap<Integer, LonLat> thisdaylogs = logs.get(id).get(date);
-//				System.out.println("--- example logs ---");
-//				System.out.println(thisdaylogs);
+				//				System.out.println("--- example logs ---");
+				//				System.out.println(thisdaylogs);
 				HashMap<String,Integer> thisdaylogs_duration = getdurations(thisdaylogs);
-//				System.out.println("--- example log durations---");
-//				System.out.println(thisdaylogs_duration);
+				//				System.out.println("--- example log durations---");
+				//				System.out.println(thisdaylogs_duration);
 				LonLat p = algorithms.weighted_meanshift(thisdaylogs_duration, bandwidth, maxshift, cutoff);
-//				System.out.println("--- example home estimate---");
-//				System.out.println(p);
+				//				System.out.println("--- example home estimate---");
+				//				System.out.println(p);
 				bw.write(id+","+date+","+String.valueOf(p.getLon())+","+String.valueOf(p.getLat()));
 				bw.newLine();
 			}
@@ -66,47 +66,59 @@ public class displacement {
 		String line1 = null;
 		int count = 0;
 		while((line1=br1.readLine())!=null){
-			count++; if(count%10000000==0) {System.out.println("done "+count); }
-			String[] tokens = line1.split(",");
-			if(tokens.length==Integer.valueOf(cols.split(",")[0])){
-				String id_br1 = tokens[Integer.valueOf(cols.split(",")[1])];
-				Double lon = Double.parseDouble(tokens[Integer.valueOf(cols.split(",")[2])]);
-				Double lat = Double.parseDouble(tokens[Integer.valueOf(cols.split(",")[3])]);
-				LonLat p = new LonLat(lon,lat);
-				String unixtime = tokens[Integer.valueOf(cols.split(",")[4])];
-				Date currentDate = new Date (Long.parseLong(unixtime)*((long)1000));
-				DATETIME.setTimeZone(TimeZone.getTimeZone("GMT-4"));
-				String datetime = DATETIME.format(currentDate); // yyyy-mm-dd hh:mm:ss
-				String yyyymmdd = datetime.split(" ")[0];
-				String time = datetime.split(" ")[1];
-				Integer hour = Integer.valueOf(time.split(":")[0]);
-				Integer mins = Integer.valueOf(time.split(":")[1]);
-				Integer secs = Integer.valueOf(time.substring(6,8));
-				Integer time_int = 3600*hour+60*mins+secs;
-				if((hour>=20)||(hour<=6)){
-					if(hour<=6) {
-						yyyymmdd = DATE.format(utils.beforeday_date(DATE.parse(yyyymmdd)));
-						time_int = time_int + 24*3600;
-					}
-					if(id_date_time_ll.containsKey(id_br1)) {
-						if(id_date_time_ll.get(id_br1).containsKey(yyyymmdd)) {
-							id_date_time_ll.get(id_br1).get(yyyymmdd).put(time_int, p);
+			try {
+				count++; if(count%10000000==0) {System.out.println("done "+count); }
+				String[] tokens = line1.split(",");
+				if(tokens.length==Integer.valueOf(cols.split(",")[0])){
+					String id_br1 = tokens[Integer.valueOf(cols.split(",")[1])];
+					Double lon = Double.parseDouble(tokens[Integer.valueOf(cols.split(",")[2])]);
+					Double lat = Double.parseDouble(tokens[Integer.valueOf(cols.split(",")[3])]);
+					LonLat p = new LonLat(lon,lat);
+					String unixtime = tokens[Integer.valueOf(cols.split(",")[4])];
+					Date currentDate = new Date (Long.parseLong(unixtime)*((long)1000));
+					DATETIME.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+					String datetime = DATETIME.format(currentDate); // yyyy-mm-dd hh:mm:ss
+					String yyyymmdd = datetime.split(" ")[0];
+					String time = datetime.split(" ")[1];
+					Integer hour = Integer.valueOf(time.split(":")[0]);
+					Integer mins = Integer.valueOf(time.split(":")[1]);
+					Integer secs = Integer.valueOf(time.substring(6,8));
+					Integer time_int = 3600*hour+60*mins+secs;
+					if((hour>=20)||(hour<=6)){
+						if(hour<=6) {
+							yyyymmdd = DATE.format(utils.beforeday_date(DATE.parse(yyyymmdd)));
+							time_int = time_int + 24*3600;
+						}
+						if(id_date_time_ll.containsKey(id_br1)) {
+							if(id_date_time_ll.get(id_br1).containsKey(yyyymmdd)) {
+								id_date_time_ll.get(id_br1).get(yyyymmdd).put(time_int, p);
+							}
+							else {
+								TreeMap<Integer, LonLat> tmp = new TreeMap<Integer, LonLat>();
+								tmp.put(time_int, p);
+								id_date_time_ll.get(id_br1).put(yyyymmdd, tmp);
+							}
 						}
 						else {
 							TreeMap<Integer, LonLat> tmp = new TreeMap<Integer, LonLat>();
 							tmp.put(time_int, p);
-							id_date_time_ll.get(id_br1).put(yyyymmdd, tmp);
-						}
-					}
-					else {
-						TreeMap<Integer, LonLat> tmp = new TreeMap<Integer, LonLat>();
-						tmp.put(time_int, p);
-						HashMap<String, TreeMap<Integer, LonLat>> tmp2 = new 
-								HashMap<String, TreeMap<Integer, LonLat>>();
-						tmp2.put(yyyymmdd, tmp);
-						id_date_time_ll.put(id_br1, tmp2);
-					}}}
-			else{System.out.println("ERROR LINE: "+line1);}
+							HashMap<String, TreeMap<Integer, LonLat>> tmp2 = new 
+									HashMap<String, TreeMap<Integer, LonLat>>();
+							tmp2.put(yyyymmdd, tmp);
+							id_date_time_ll.put(id_br1, tmp2);
+						}}}
+				else{System.out.println("ERROR LINE: "+line1);}
+			}
+			catch (ArrayIndexOutOfBoundsException  e){
+				System.out.println("OUT OF BOUNDS EXCEPTION ----");
+				System.out.println(line1);
+				System.out.println("----");
+			}
+			catch (Exception  e){
+				System.out.println("OTHER ERROR IN LINE ----");
+				System.out.println(line1);
+				System.out.println("----");				
+			}
 		}
 		br1.close();
 		return id_date_time_ll;
@@ -139,24 +151,24 @@ public class displacement {
 				Integer t = (Integer) entry.getKey();
 				LonLat p = (LonLat) entry.getValue();
 				String p_str = String.valueOf(p.getLon())+","+String.valueOf(p.getLat());
-//				System.out.println("thisline---"+t+","+p);
+				//				System.out.println("thisline---"+t+","+p);
 				Integer time = t - beftime;
 				if(!beforep.equals("0")) {
 					if(ll_duration.containsKey(beforep)) {
 						Integer totaltime = time+ll_duration.get(beforep);
 						ll_duration.put(beforep, totaltime);
-//						System.out.println("added---"+time+","+beforep+","+totaltime);
+						//						System.out.println("added---"+time+","+beforep+","+totaltime);
 					}
 					else {
 						ll_duration.put(beforep, time);
 					}
-//					System.out.println("duration---"+time+","+beforep);
+					//					System.out.println("duration---"+time+","+beforep);
 				}
 				beforep = p_str;
 				beftime = t;
 			}
 		}
-//		System.out.println("res---"+ll_duration);
+		//		System.out.println("res---"+ll_duration);
 		return ll_duration;
 	}
 
