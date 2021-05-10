@@ -53,7 +53,7 @@ public class getmotifs {
 				String flag = "no";
 				for(LonLat clus : ll_num.keySet()) {
 					if(p.distance(clus)<thres) {
-						result = result + date+","+clusnum+";";
+						result = result + date+","+ll_num.get(clus)+";";
 						flag = "yes";
 						break;
 					}

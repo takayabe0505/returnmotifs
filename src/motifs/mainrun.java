@@ -24,7 +24,7 @@ public class mainrun {
 		Double bandwidth = 250d;
 		Double maxshift  = 250d;
 		Double cutoff    = 1000d;		
-		Double motifthres = 500d;
+		Double motifthres = 1000d;
 		
 		// result files 
 		File id_nightlocs = new File(outpath+"id_date_nightloc.csv");
