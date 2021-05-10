@@ -52,9 +52,9 @@ public class algorithms {
 			for(Iterator<LonLat> i = ll_duration.keySet().iterator();i.hasNext();){
 				LonLat p = i.next();
 				if(p.distance(newmean)<cutoff){
+					counter+=ll_duration.get(p)/1800;
 					i.remove();
 //					counter+=1;
-					counter+=ll_duration.get(p)/1800;
 				}
 			}
 			p_count.put(newmean, counter);

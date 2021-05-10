@@ -18,7 +18,7 @@ public class mainrun {
 		File gps2 = new File(gpspath+"SAFEGRAPH2/PRAlldata_DecFeb.csv"); // 120M lines
 
 		// output path 
-		String outpath = "/home/bridge/c/tyabe/workscape/recoverymotif/";  
+		String outpath = "/home/bridge/c/tyabe/workspace/recoverymotif/";  
 
 		// Clustering parameters
 		Double bandwidth = 250d;
