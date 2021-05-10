@@ -3,6 +3,7 @@
 	<name>ReturnMotifs</name>
 	<comment></comment>
 	<projects>
+		<project>PFlowLibFull</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
