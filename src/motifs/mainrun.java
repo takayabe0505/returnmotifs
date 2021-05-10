@@ -24,10 +24,18 @@ public class mainrun {
 		Double bandwidth = 250d;
 		Double maxshift  = 250d;
 		Double cutoff    = 1000d;		
+		Double motifthres = 500d;
 		
-//		runcode(gps1, "type1", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 1");
-		runcode(gps2, "type2", bandwidth, maxshift, cutoff, outpath); System.out.println("Done File 2");
+		// result files 
+		File id_nightlocs = new File(outpath+"id_date_nightloc.csv");
+		File id_motifseq = new File(outpath+"id_motifseq.csv");
+		
+//		runcode(gps1, "type1", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
+//		runcode(gps2, "type2", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
 
+		// 3. analyze sequence and compute motifs
+		getmotifs.computemotifs(id_nightlocs, motifthres, id_motifseq);
+		
 	}
 
 	public static void runcode(
@@ -36,7 +44,7 @@ public class mainrun {
 			Double bandwidth,
 			Double maxshift,
 			Double cutoff,		
-			String outpath
+			File id_nightlocs
 			) throws NumberFormatException, IOException, ParseException {
 
 		// 1. store location data in hashmap
@@ -44,11 +52,8 @@ public class mainrun {
 		System.out.println("--- got data hashmap!");
 		
 		// 2. get nighttime staypoints for each ID for each day
-		File out = new File(outpath+"id_date_nightloc.csv");
-		displacement.getnightlocs(id_date_time_ll, bandwidth, maxshift, cutoff, out);
+		displacement.getnightlocs(id_date_time_ll, bandwidth, maxshift, cutoff, id_nightlocs);	
 		
-		// 3. analyze sequence and compute motifs
-
 	}
 
 
