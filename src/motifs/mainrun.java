@@ -44,11 +44,13 @@ public class mainrun {
 		System.out.println("--- got data hashmap!");
 		
 		// 2. get nighttime staypoints for each ID for each day
-		File out = new File(outpath+"id_date_nightloc.csv");
-		displacement.getnightlocs(id_date_time_ll, bandwidth, maxshift, cutoff, out);
+		File id_nightlocs = new File(outpath+"id_date_nightloc.csv");
+		displacement.getnightlocs(id_date_time_ll, bandwidth, maxshift, cutoff, id_nightlocs);
 		
 		// 3. analyze sequence and compute motifs
-
+//		File 
+		
+		
 	}
 
 
