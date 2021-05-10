@@ -14,7 +14,7 @@ public class mainrun {
 
 		// GPS data path
 		String gpspath = "/home/umni2/a/umnilab/data/Hurricane_GPS/maria/";
-		File gps1 = new File(gpspath+"SAFEGRAPH/PRAlldata_SepNov.csv");  // 200M lines
+		File gps1 = new File(gpspath+"SAFEGRAPH/PRGPSalldata_SepNov.csv");  // 200M lines
 		File gps2 = new File(gpspath+"SAFEGRAPH2/PRAlldata_DecFeb.csv"); // 120M lines
 
 		// output path 
