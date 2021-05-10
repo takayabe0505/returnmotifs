@@ -23,7 +23,7 @@ public class displacement {
 	protected static final SimpleDateFormat DATE = new SimpleDateFormat("yyyyMMdd");//change time format
 	protected static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 
-	
+
 	public static void getnightlocs(
 			HashMap<String, HashMap<String, TreeMap<Integer, LonLat>>> logs, 
 			Double bandwidth, Double maxshift, Double cutoff,
@@ -33,21 +33,19 @@ public class displacement {
 		Integer count = 0;
 		for(String id : logs.keySet()) {
 			count+=1;
-			if(count%1000==0) {
+			if(count%10000==0) {
 				System.out.println("--- done "+String.valueOf(count)+" / "+String.valueOf(logs.keySet().size()));
 			}
 			for(String date : logs.get(id).keySet()) {
 				TreeMap<Integer, LonLat> thisdaylogs = logs.get(id).get(date);
-				HashMap<LonLat,Integer> thisdaylogs_duration = getdurations(thisdaylogs);
+//				System.out.println("--- example logs ---");
+//				System.out.println(thisdaylogs);
+				HashMap<String,Integer> thisdaylogs_duration = getdurations(thisdaylogs);
+//				System.out.println("--- example log durations---");
+//				System.out.println(thisdaylogs_duration);
 				LonLat p = algorithms.weighted_meanshift(thisdaylogs_duration, bandwidth, maxshift, cutoff);
-				if(count<=5) {
-					System.out.println("--- example logs ---");
-					System.out.println(thisdaylogs);
-					System.out.println("--- example log durations---");
-					System.out.println(thisdaylogs_duration);
-					System.out.println("--- example home estimate---");
-					System.out.println(p);
-				}
+//				System.out.println("--- example home estimate---");
+//				System.out.println(p);
 				bw.write(id+","+date+","+String.valueOf(p.getLon())+","+String.valueOf(p.getLat()));
 				bw.newLine();
 			}
@@ -55,8 +53,8 @@ public class displacement {
 		bw.close();
 	}
 
-	
-	
+
+
 	public static HashMap<String, HashMap<String, TreeMap<Integer, LonLat>>> getalllogs(
 			File gps,
 			String doctype
@@ -127,28 +125,41 @@ public class displacement {
 			return "identify doc type";
 		}
 	}
-	
-	
-	public static HashMap<LonLat,Integer> getdurations(TreeMap<Integer, LonLat> time_ll) {
+
+
+	public static HashMap<String,Integer> getdurations(TreeMap<Integer, LonLat> time_ll) {
 		time_ll.put(3600*31, new LonLat(0d,0d));
-		HashMap<LonLat,Integer> ll_duration = new HashMap<LonLat,Integer>();
+		HashMap<String,Integer> ll_duration = new HashMap<String,Integer>();
 		Integer beftime = 3600*20;
-		LonLat beforep = new LonLat(0d,0d);
+		String  beforep = "0";
 		Iterator<Entry<Integer, LonLat>> entries = time_ll.entrySet().iterator();
-		while(entries.hasNext()) {
-			Map.Entry<Integer, LonLat> entry = (Map.Entry<Integer, LonLat>)entries.next();
-			Integer t = (Integer) entry.getKey();
-			LonLat p = (LonLat) entry.getValue();
-			Integer time = t - beftime;
-			if(beforep.getLon()!=0d) {
-				ll_duration.put(beforep, time);
+		if(time_ll.size()<100) {
+			while(entries.hasNext()) {
+				Map.Entry<Integer, LonLat> entry = (Map.Entry<Integer, LonLat>)entries.next();
+				Integer t = (Integer) entry.getKey();
+				LonLat p = (LonLat) entry.getValue();
+				String p_str = String.valueOf(p.getLon())+","+String.valueOf(p.getLat());
+//				System.out.println("thisline---"+t+","+p);
+				Integer time = t - beftime;
+				if(!beforep.equals("0")) {
+					if(ll_duration.containsKey(beforep)) {
+						Integer totaltime = time+ll_duration.get(beforep);
+						ll_duration.put(beforep, totaltime);
+//						System.out.println("added---"+time+","+beforep+","+totaltime);
+					}
+					else {
+						ll_duration.put(beforep, time);
+					}
+//					System.out.println("duration---"+time+","+beforep);
+				}
+				beforep = p_str;
+				beftime = t;
 			}
-			beforep = p;
-			beftime = t;
 		}
+//		System.out.println("res---"+ll_duration);
 		return ll_duration;
 	}
-	
+
 
 
 }

@@ -8,7 +8,7 @@ import jp.ac.ut.csis.pflow.geom.LonLat;
 public class algorithms {	
 	
 	public static LonLat weighted_meanshift(
-			HashMap<LonLat, Integer> ll_duration,
+			HashMap<String, Integer> ll_duration,
 			Double bw,
 			Double maxshift,
 			Double cutoff
@@ -18,7 +18,8 @@ public class algorithms {
 			// choose initial point 
 			LonLat init = null;
 			Integer z = 0;
-			for(LonLat d : ll_duration.keySet()) {
+			for(String d_str : ll_duration.keySet()) {
+				LonLat d = new LonLat(Double.parseDouble(d_str.split(",")[0]),Double.parseDouble(d_str.split(",")[1]));
 				init = d;
 				z+=1;
 				if(z==1) {
@@ -34,7 +35,8 @@ public class algorithms {
 				Double tmplon = 0d;
 				Double tmplat = 0d;
 				Double tmpwei = 0d;
-				for(LonLat p : ll_duration.keySet()) {
+				for(String p_str : ll_duration.keySet()) {
+					LonLat p = new LonLat(Double.parseDouble(p_str.split(",")[0]),Double.parseDouble(p_str.split(",")[1]));
 					Double distance = befmean.distance(p);
 					if(distance<cutoff) {
 						Double dist2 = Math.pow(distance, 2d);
@@ -49,10 +51,11 @@ public class algorithms {
 			}
 			// newmean is the stable point 
 			Integer counter = 0;
-			for(Iterator<LonLat> i = ll_duration.keySet().iterator();i.hasNext();){
-				LonLat p = i.next();
+			for(Iterator<String> i = ll_duration.keySet().iterator();i.hasNext();){
+				String p_str = i.next();
+				LonLat p = new LonLat(Double.parseDouble(p_str.split(",")[0]),Double.parseDouble(p_str.split(",")[1]));
 				if(p.distance(newmean)<cutoff){
-					counter+=ll_duration.get(p)/1800;
+					counter+=ll_duration.get(p_str)/1800;
 					i.remove();
 //					counter+=1;
 				}
