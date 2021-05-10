@@ -25,7 +25,7 @@ public class getmotifs {
 				System.out.println("done "+String.valueOf(count)+" / "+String.valueOf(map.size()));
 			}
 			TreeMap<String, LonLat> ps = map.get(id);
-			getsequence(id, ps, thres, out);
+			getsequence(id, ps, thres, out, count);
 		}
 	}
 
@@ -33,7 +33,8 @@ public class getmotifs {
 			String id,
 			TreeMap<String, LonLat> date_ll,
 			Double thres,
-			File out
+			File out,
+			Integer count
 			) throws IOException {
 		// temp map for lonlat and node number
 		HashMap<LonLat, Integer> ll_num = new HashMap<LonLat, Integer>();
@@ -69,6 +70,9 @@ public class getmotifs {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(out, true));
 		bw.write(id+"\t"+result);
 		bw.newLine();
+		if(count%10000==0) {
+			System.out.println(result);
+		}
 		bw.close();
 	}
 
