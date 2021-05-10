@@ -11,8 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
@@ -128,19 +130,20 @@ public class displacement {
 	
 	
 	public static HashMap<LonLat,Integer> getdurations(TreeMap<Integer, LonLat> time_ll) {
+		time_ll.put(3600*31, new LonLat(0d,0d));
 		HashMap<LonLat,Integer> ll_duration = new HashMap<LonLat,Integer>();
 		Integer beftime = 3600*20;
-		for(Iterator<Integer> i = time_ll.keySet().iterator();i.hasNext();){
-			Integer t = i.next();
-			LonLat p = time_ll.get(t);
+		LonLat beforep = new LonLat(0d,0d);
+		Iterator<Entry<Integer, LonLat>> entries = time_ll.entrySet().iterator();
+		while(entries.hasNext()) {
+			Map.Entry<Integer, LonLat> entry = (Map.Entry<Integer, LonLat>)entries.next();
+			Integer t = (Integer) entry.getKey();
+			LonLat p = (LonLat) entry.getValue();
 			Integer time = t - beftime;
-			if(ll_duration.containsKey(p)) {
-				Integer newtotal = ll_duration.get(p)+time;
-				ll_duration.put(p, newtotal);
+			if(beforep.getLon()!=0d) {
+				ll_duration.put(beforep, time);
 			}
-			else {
-				ll_duration.put(p, time);
-			}
+			beforep = p;
 			beftime = t;
 		}
 		return ll_duration;
