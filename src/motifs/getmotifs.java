@@ -18,7 +18,12 @@ public class getmotifs {
 			Double thres, 
 			File out) throws IOException {
 		HashMap<String, TreeMap<String, LonLat>> map = intomap(in);
+		Integer count = 0;
 		for(String id : map.keySet()) {
+			count+=1;
+			if(count%10000==0) {
+				System.out.println("done "+String.valueOf(count)+" / "+String.valueOf(map.size()));
+			}
 			TreeMap<String, LonLat> ps = map.get(id);
 			getsequence(id, ps, thres, out);
 		}
@@ -87,6 +92,7 @@ public class getmotifs {
 			}
 		}
 		br.close();
+		System.out.println("done into map");
 		return map;
 	}
 
