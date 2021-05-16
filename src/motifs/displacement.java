@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import jp.ac.ut.csis.pflow.geom.LonLat;
 
@@ -154,12 +154,18 @@ public class displacement {
 				//				System.out.println("thisline---"+t+","+p);
 				Integer time = t - beftime;
 				if(!beforep.equals("0")) {
-					if(ll_duration.containsKey(beforep)) {
-						Integer totaltime = time+ll_duration.get(beforep);
-						ll_duration.put(beforep, totaltime);
-						//						System.out.println("added---"+time+","+beforep+","+totaltime);
+					// change to clustering points together if they are close
+					String yesno = "no";
+					LonLat beforep_p = new LonLat(Double.parseDouble(beforep.split(",")[0]),Double.parseDouble(beforep.split(",")[1]));
+					for(String point : ll_duration.keySet()) {
+						LonLat point_p = new LonLat(Double.parseDouble(point.split(",")[0]),Double.parseDouble(point.split(",")[1]));
+						if(beforep_p.distance(point_p)<500d) {
+							Integer totaltime = time+ll_duration.get(beforep);
+							ll_duration.put(beforep, totaltime);
+							//						System.out.println("added---"+time+","+beforep+","+totaltime);
+						}
 					}
-					else {
+					if(yesno.equals("no")) {
 						ll_duration.put(beforep, time);
 					}
 					//					System.out.println("duration---"+time+","+beforep);
