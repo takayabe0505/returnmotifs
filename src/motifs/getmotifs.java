@@ -106,7 +106,7 @@ public class getmotifs {
 			// first point 
 			if(ll_num.isEmpty()) {
 				ll_num.put(p, clusnum);
-				result = result + date+","+p+","+clusnum+"\n";
+				result = result + date+","+String.valueOf(p.getLon())+","+String.valueOf(p.getLat())+","+clusnum+"\n";
 				clusnum+=1;
 			}
 			// from second point
@@ -115,7 +115,7 @@ public class getmotifs {
 				String flag = "no";
 				for(LonLat clus : ll_num.keySet()) {
 					if(p.distance(clus)<thres) {
-						result = result + date+","+p+","+ll_num.get(clus)+"\n";
+						result = result + date+","+String.valueOf(p.getLon())+","+String.valueOf(p.getLat())+","+ll_num.get(clus)+"\n";
 						flag = "yes";
 						break;
 					}
@@ -123,12 +123,12 @@ public class getmotifs {
 				// if point is not near any cluster center
 				if(flag.equals("no")) {
 					ll_num.put(p, clusnum);
-					result = result + date+","+p+","+clusnum+"\n";
+					result = result + date+","+String.valueOf(p.getLon())+","+String.valueOf(p.getLat())+","+clusnum+"\n";
 					clusnum+=1;
 				}
 			}
 		}
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out, true));
+		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		bw.write(result);
 		bw.newLine();
 		bw.close();

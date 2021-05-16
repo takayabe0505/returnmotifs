@@ -33,8 +33,8 @@ public class plotting_traj {
 //		File gps2 = new File(gpspath+"SAFEGRAPH2/PRAlldata_DecFeb.csv"); // 120M lines
 
 		// output path 
-//		String outpath = "/home/bridge/c/tyabe/workspace/recoverymotif/";  
-		String outpath = "C:/users/yabec/Desktop/RecoveryMotifs/";  
+		String outpath = "/home/bridge/c/tyabe/workspace/recoverymotif/";  
+//		String outpath = "C:/users/yabec/Desktop/RecoveryMotifs/";  
 		
 		File id_nightlocs = new File(outpath+"id_date_nightloc.csv");
 
