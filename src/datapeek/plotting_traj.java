@@ -23,7 +23,7 @@ public class plotting_traj {
 	 */
 
 	protected static final SimpleDateFormat DATE = new SimpleDateFormat("yyyyMMdd");//change time format
-	protected static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+	protected static final SimpleDateFormat DATETIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void main(String[] args) throws NumberFormatException, IOException, ParseException {
 
@@ -77,7 +77,7 @@ public class plotting_traj {
 						DATETIME.setTimeZone(TimeZone.getTimeZone("GMT-4"));
 						String datetime = DATETIME.format(currentDate); // yyyymmdd hh:mm:ss
 						
-						File out = new File(outpath+id_br1+"_rawdata.csv");
+						File out = new File(outpath+id_br1+"_rawdata_v2.csv");
 						BufferedWriter bw = new BufferedWriter(new FileWriter(out, true));
 						bw.write(id_br1+","+datetime+","+String.valueOf(lon)+","+String.valueOf(lat));
 						bw.newLine();
