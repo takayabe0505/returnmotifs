@@ -27,11 +27,11 @@ public class mainrun {
 		Double motifthres = 1000d;
 		
 		// result files 
-		File id_nightlocs = new File(outpath+"id_date_nightloc.csv");
-		File id_motifseq = new File(outpath+"id_motifseq.csv");
+		File id_nightlocs = new File(outpath+"id_date_nightloc_v2.csv");
+		File id_motifseq = new File(outpath+"id_motifseq_v2.csv");
 		
-//		runcode(gps1, "type1", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
-//		runcode(gps2, "type2", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
+		runcode(gps1, "type1", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
+		runcode(gps2, "type2", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
 
 		// 3. analyze sequence and compute motifs
 		getmotifs.computemotifs(id_nightlocs, motifthres, id_motifseq);

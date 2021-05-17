@@ -84,7 +84,7 @@ public class displacement {
 					Integer mins = Integer.valueOf(time.split(":")[1]);
 					Integer secs = Integer.valueOf(time.substring(6,8));
 					Integer time_int = 3600*hour+60*mins+secs;
-					if((hour>=20)||(hour<=6)){
+					if((hour>=18)||(hour<=6)){
 						if(hour<=6) {
 							yyyymmdd = DATE.format(utils.beforeday_date(DATE.parse(yyyymmdd)));
 							time_int = time_int + 24*3600;
@@ -145,7 +145,7 @@ public class displacement {
 		Integer beftime = 3600*20;
 		String  beforep = "0";
 		Iterator<Entry<Integer, LonLat>> entries = time_ll.entrySet().iterator();
-		if(time_ll.size()<100) {
+//		if(time_ll.size()<100) {
 			while(entries.hasNext()) {
 				Map.Entry<Integer, LonLat> entry = (Map.Entry<Integer, LonLat>)entries.next();
 				Integer t = (Integer) entry.getKey();
@@ -162,6 +162,7 @@ public class displacement {
 						if(beforep_p.distance(point_p)<500d) {
 							Integer totaltime = time+ll_duration.get(beforep);
 							ll_duration.put(beforep, totaltime);
+							yesno = "yes";
 							//						System.out.println("added---"+time+","+beforep+","+totaltime);
 						}
 					}
@@ -173,7 +174,7 @@ public class displacement {
 				beforep = p_str;
 				beftime = t;
 			}
-		}
+//		}
 		//		System.out.println("res---"+ll_duration);
 		return ll_duration;
 	}
