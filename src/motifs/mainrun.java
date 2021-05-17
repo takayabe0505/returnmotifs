@@ -31,7 +31,7 @@ public class mainrun {
 		File id_motifseq = new File(outpath+"id_motifseq_v2.csv");
 		
 		runcode(gps1, "type1", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
-		runcode(gps2, "type2", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 1");
+		runcode(gps2, "type2", bandwidth, maxshift, cutoff, id_nightlocs); System.out.println("Done File 2");
 
 		// 3. analyze sequence and compute motifs
 		getmotifs.computemotifs(id_nightlocs, motifthres, id_motifseq);

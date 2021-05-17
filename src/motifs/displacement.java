@@ -160,8 +160,8 @@ public class displacement {
 					for(String point : ll_duration.keySet()) {
 						LonLat point_p = new LonLat(Double.parseDouble(point.split(",")[0]),Double.parseDouble(point.split(",")[1]));
 						if(beforep_p.distance(point_p)<500d) {
-							Integer totaltime = time+ll_duration.get(beforep);
-							ll_duration.put(beforep, totaltime);
+							Integer totaltime = time+ll_duration.get(point);
+							ll_duration.put(point, totaltime);
 							yesno = "yes";
 							//						System.out.println("added---"+time+","+beforep+","+totaltime);
 						}
