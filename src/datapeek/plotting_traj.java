@@ -28,9 +28,9 @@ public class plotting_traj {
 	public static void main(String[] args) throws NumberFormatException, IOException, ParseException {
 
 		// GPS data path
-//		String gpspath = "/home/umni2/a/umnilab/data/Hurricane_GPS/maria/";
-//		File gps1 = new File(gpspath+"SAFEGRAPH/PRGPSalldata_SepNov.csv");  // 200M lines
-//		File gps2 = new File(gpspath+"SAFEGRAPH2/PRAlldata_DecFeb.csv"); // 120M lines
+		String gpspath = "/home/umni2/a/umnilab/data/Hurricane_GPS/maria/";
+		File gps1 = new File(gpspath+"SAFEGRAPH/PRGPSalldata_SepNov.csv");  // 200M lines
+		File gps2 = new File(gpspath+"SAFEGRAPH2/PRAlldata_DecFeb.csv"); // 120M lines
 
 		// output path 
 		String outpath = "/home/bridge/c/tyabe/workspace/recoverymotif/";  
@@ -45,10 +45,10 @@ public class plotting_traj {
 		ids.add("c0b7570c18316191851f98d509ab420f7664cc963889a65e1883da395fd1eb01");
 		ids.add("a94a6ee3ff8144799292e0fc37d97b3ded378d6650023eb33cb4e6ebbd455dc3");
 
-//		getlogs(gps1, "type1", ids, outpath);
-//		getlogs(gps2, "type2", ids, outpath);
+		getlogs(gps1, "type1", ids, outpath+"indiv/");
+		getlogs(gps2, "type2", ids, outpath+"indiv/");
 		
-		getmotifs.computemotifs_indiv(id_nightlocs, 1000d, ids, outpath+"indiv/");
+//		getmotifs.computemotifs_indiv(id_nightlocs, 1000d, ids, outpath+"indiv/");
 		
 	}
 
@@ -60,12 +60,9 @@ public class plotting_traj {
 			String outpath
 			) throws NumberFormatException, IOException, ParseException{
 		String cols = getdoctype(doctype);
-		File out = new File(outpath+"visualize_data.csv");
 		BufferedReader br1 = new BufferedReader(new FileReader(gps));
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 		String line1 = null;
 		int count = 0;
-		bw.write("id,datetime,long,lat"); bw.newLine();
 		while((line1=br1.readLine())!=null){
 			try {
 				count++; if(count%10000000==0) {System.out.println("done "+count); }
@@ -79,8 +76,12 @@ public class plotting_traj {
 						Date currentDate = new Date (Long.parseLong(unixtime)*((long)1000));
 						DATETIME.setTimeZone(TimeZone.getTimeZone("GMT-4"));
 						String datetime = DATETIME.format(currentDate); // yyyymmdd hh:mm:ss
+						
+						File out = new File(outpath+id_br1+"_rawdata.csv");
+						BufferedWriter bw = new BufferedWriter(new FileWriter(out, true));
 						bw.write(id_br1+","+datetime+","+String.valueOf(lon)+","+String.valueOf(lat));
 						bw.newLine();
+						bw.close();
 					}}
 				else{System.out.println("ERROR LINE: "+line1);}
 			}
@@ -96,7 +97,6 @@ public class plotting_traj {
 			}
 		}
 		br1.close();
-		bw.close();
 	}
 
 	public static String getdoctype(String doctype) {
