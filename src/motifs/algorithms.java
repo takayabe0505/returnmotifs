@@ -55,7 +55,7 @@ public class algorithms {
 				String p_str = i.next();
 				LonLat p = new LonLat(Double.parseDouble(p_str.split(",")[0]),Double.parseDouble(p_str.split(",")[1]));
 				if(p.distance(newmean)<cutoff){
-					counter+=ll_duration.get(p_str)/1800;
+					counter+=ll_duration.get(p_str)/300;
 					i.remove();
 //					counter+=1;
 				}
